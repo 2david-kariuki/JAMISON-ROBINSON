@@ -1,58 +1,76 @@
-import { motion } from 'framer-motion';
-import { Download, Terminal } from 'lucide-react';
-import { useTerminalMode } from '@/contexts/TerminalModeContext';
-
-const navItems = ['About', 'Experience', 'Systems', 'Contact'];
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Terminal } from 'lucide-react';
 
 const Header = () => {
-  const { isTerminal, toggle } = useTerminalMode();
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' });
-  };
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'ABOUT', href: '#about' },
+    { name: 'EDUCATION', href: '#education' },
+    { name: 'EXPERIENCE', href: '#experience' },
+    { name: 'SYSTEMS', href: '#systems' },
+  ];
 
   return (
-    <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 glass"
-    >
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        <span className="text-foreground font-semibold text-lg tracking-tight">
-          {isTerminal ? '~/jamison' : 'JR'}
-        </span>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'bg-transparent py-6'}`}>
+      <div className="container mx-auto px-6 max-w-[1400px] flex justify-between items-center">
+        
+        {/* Brand */}
+        <a href="#about" className="flex items-center gap-2 group">
+          <Terminal className="text-primary group-hover:rotate-12 transition-transform" size={20} />
+          <span className="font-mono font-bold tracking-tighter text-lg uppercase">JR_ARCHITECT</span>
+        </a>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {navItems.map(item => (
-            <button
-              key={item}
-              onClick={() => scrollTo(item)}
-              className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-            >
-              {isTerminal ? `$ ${item.toLowerCase()}` : item}
-            </button>
+        {/* Desktop Links - Hidden on Mobile */}
+        <div className="hidden md:flex gap-8">
+          {navLinks.map((link) => (
+            <a key={link.name} href={link.href} className="text-xs font-mono font-medium hover:text-primary transition-colors tracking-widest">
+              {link.name}
+            </a>
           ))}
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={toggle}
-            className="p-2 rounded-md text-muted-foreground hover:text-accent transition-colors"
-            title="Toggle Terminal Mode"
-          >
-            <Terminal size={18} />
-          </button>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium pulse-subtle hover:opacity-90 transition-opacity"
-          >
-            <Download size={16} />
-            Download CV
-          </a>
         </div>
+
+        {/* Mobile Toggle Button */}
+        <button 
+          className="md:hidden text-primary p-2" 
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle Menu"
+        >
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
-    </motion.header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-full left-0 w-full glass border-b border-white/10 flex flex-col items-center py-8 gap-6 md:hidden"
+          >
+            {navLinks.map((link) => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                onClick={() => setIsOpen(false)}
+                className="text-sm font-mono tracking-[0.3em] hover:text-primary"
+              >
+                {link.name}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
   );
 };
 
