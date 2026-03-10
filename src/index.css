@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 220 20% 5%;
+    --foreground: 210 40% 92%;
+
+    --card: 216 22% 11%;
+    --card-foreground: 210 40% 92%;
+
+    --popover: 216 22% 11%;
+    --popover-foreground: 210 40% 92%;
+
+    --primary: 263 86% 76%;
+    --primary-foreground: 220 20% 5%;
+
+    --secondary: 216 22% 16%;
+    --secondary-foreground: 210 40% 92%;
+
+    --muted: 216 22% 16%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 170 77% 50%;
+    --accent-foreground: 220 20% 5%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 25% 20%;
+    --input: 215 25% 20%;
+    --ring: 263 86% 76%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 220 20% 5%;
+    --sidebar-foreground: 210 40% 92%;
+    --sidebar-primary: 263 86% 76%;
+    --sidebar-primary-foreground: 220 20% 5%;
+    --sidebar-accent: 216 22% 16%;
+    --sidebar-accent-foreground: 210 40% 92%;
+    --sidebar-border: 215 25% 20%;
+    --sidebar-ring: 263 86% 76%;
+
+    /* Custom tokens */
+    --glow-violet: 0 0 40px hsl(263 86% 76% / 0.15);
+    --glow-teal: 0 0 40px hsl(170 77% 50% / 0.15);
+    --glass-bg: hsl(216 22% 11% / 0.6);
+    --glass-border: hsl(215 25% 20% / 0.5);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  body.terminal-mode {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  body.terminal-mode h1,
+  body.terminal-mode h2,
+  body.terminal-mode h3,
+  body.terminal-mode h4,
+  body.terminal-mode h5,
+  body.terminal-mode h6,
+  body.terminal-mode p,
+  body.terminal-mode span,
+  body.terminal-mode a,
+  body.terminal-mode button {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+  }
+
+  .glow-violet {
+    box-shadow: var(--glow-violet);
+  }
+
+  .glow-teal {
+    box-shadow: var(--glow-teal);
+  }
+
+  .system-card {
+    @apply bg-card border border-border rounded-lg transition-all duration-300;
+  }
+
+  .system-card:hover {
+    box-shadow: var(--glow-violet);
+    border-color: hsl(263 86% 76% / 0.3);
+  }
+
+  .pulse-subtle {
+    animation: pulse-subtle 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% {
+      box-shadow: 0 0 0 0 hsl(263 86% 76% / 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 6px hsl(263 86% 76% / 0);
+    }
+  }
+
+  .timeline-line {
+    @apply absolute left-4 top-0 bottom-0 w-px bg-border;
+  }
+
+  .timeline-dot {
+    @apply absolute left-[13px] w-[11px] h-[11px] rounded-full border-2 border-primary bg-background z-10;
+  }
+}
