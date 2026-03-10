@@ -11,6 +11,18 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+        {/* Profile Image - Now visible on all screens, appears first on mobile */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="relative order-first lg:order-last flex justify-center"
+        >
+          <div className="glass w-64 h-64 md:w-80 md:h-80 lg:w-[450px] lg:h-[450px] rounded-3xl overflow-hidden border border-white/10 glow-violet lg:rotate-3">
+             <img src={profilePic} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Jamison Robinson" />
+          </div>
+        </motion.div>
+
+        {/* Text Content */}
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -19,7 +31,7 @@ const Hero = () => {
           <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-mono mb-6 border border-primary/20">
             SYSTEM_STATUS: OPERATIONAL
           </span>
-          <h1 className="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 leading-none">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 leading-none">
             JAMISON <br/>
             <span className="text-primary glow-violet">ROBINSON</span>
           </h1>
@@ -27,16 +39,6 @@ const Hero = () => {
             M.S. Software Engineering. I architect high-performance backends 
             and scalable cloud systems with a focus on 30% optimization metrics.
           </p>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative hidden lg:block"
-        >
-          <div className="glass aspect-square rounded-3xl overflow-hidden border border-white/10 glow-violet rotate-3">
-             <img src={profilePic} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Workspace" />
-          </div>
         </motion.div>
       </div>
     </section>
